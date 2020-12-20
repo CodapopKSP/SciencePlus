@@ -8,51 +8,52 @@ namespace SciencePlus
     //public class SciencePlus : ScenarioModule
     public class SciencePlus : MonoBehaviour
     {
-        //void SaveScience(ConfigNode node)
+        void SaveScience(ConfigNode node)
+        {
+            Debug.Log("[--------SCIENCE + --------]: SAVE");
+            if (node.HasNode("SCIENCE+"))
+            {
+                Debug.Log("[--------SCIENCE + --------]: HasNode check");
+                node = node.GetNode("SCIENCE+");
+                foreach (ScienceType scienceType in allScienceColors)
+                {
+                    Debug.Log("[--------SCIENCE + --------]: " + scienceType.color + "type");
+                    if (scienceType.scienceCache > 0)
+                    {
+                        float data;
+                        Debug.Log("[--------SCIENCE + --------]: " + scienceType.scienceName + " cache: " + scienceType.scienceCache);
+                        data = float.Parse(node.GetValue(scienceType.scienceName));
+                        Debug.Log("[--------SCIENCE + --------]: " + scienceType.scienceName + " old: " + data);
+                        float newScienceValue = data + scienceType.scienceCache;
+                        node.SetValue(scienceType.scienceName, newScienceValue);
+                        Debug.Log("[--------SCIENCE + --------]: " + scienceType.scienceName + " new: " + newScienceValue);
+                        scienceType.scienceCache = 0;
+                    }
+                }
+            }
+            else
+            {
+                Debug.Log("[--------SCIENCE + --------]: not HasNode");
+                node.AddNode("SCIENCE+");
+                node = node.GetNode("SCIENCE+");
+                foreach (ScienceType scienceType in allScienceColors)
+                {
+                    Debug.Log("[--------SCIENCE + --------]: " + scienceType.color + "type");
+                    if (!(node.HasValue(scienceType.scienceName)))
+                    {
+                        Debug.Log("[--------SCIENCE + --------]: " + scienceType.color + "not HasValue");
+                        node.AddValue(scienceType.scienceName, "0");
+                        Debug.Log("[--------SCIENCE + --------]: " + scienceType.scienceName + " NODE ADDED");
 
-        if (File.Exists(path))
-        //{
-        //    Debug.Log("[--------SCIENCE + --------]: SAVE");
-        //    if (node.HasNode("SCIENCE+"))
-        //    {
-        //        Debug.Log("[--------SCIENCE + --------]: IF");
-        //        node = node.GetNode("SCIENCE+");
-        //        foreach (ScienceType scienceType in allScienceColors)
-        //        {
-        //            if (scienceType.scienceCache > 0)
-        //            {
-        //                float data;
-        //                Debug.Log("[--------SCIENCE + --------]: " + scienceType.scienceName + " cache: " + scienceType.scienceCache);
-        //                data = float.Parse(node.GetValue(scienceType.scienceName));
-        //                Debug.Log("[--------SCIENCE + --------]: " + scienceType.scienceName + " old: " + data);
-        //                float newScienceValue = data + scienceType.scienceCache;
-        //                node.SetValue(scienceType.scienceName, newScienceValue);
-        //                Debug.Log("[--------SCIENCE + --------]: " + scienceType.scienceName + " new: " + newScienceValue);
-        //                scienceType.scienceCache = 0;
-        //            }
-        //        }
-        //    }
-        //    else
-        //    {
-        //        Debug.Log("[--------SCIENCE + --------]: ELSE");
-        //        node.AddNode("SCIENCE+");
-        //        node = node.GetNode("SCIENCE+");
-        //        foreach (ScienceType scienceType in allScienceColors)
-        //        {
-        //            if (!(node.HasValue(scienceType.scienceName)))
-        //            {
-        //                node.AddValue(scienceType.scienceName, "0");
-        //                Debug.Log("[--------SCIENCE + --------]: " + scienceType.scienceName + " NODE ADDED");
-
-        //            }
-        //        }
-        //    }
-        //}
+                    }
+                }
+            }
+        }
 
         private void Start()
         {
             GameEvents.OnScienceRecieved.Add(ScienceProcessingCallback);
-            //GameEvents.onGameStateSave.Add(SaveScience);
+            GameEvents.onGameStateSave.Add(SaveScience);
         }
 
         private void OnDestroy()
@@ -71,7 +72,7 @@ namespace SciencePlus
                     {
                         float newTotal = scienceType.scienceCache + sub.science;
                         scienceType.scienceCache = newTotal;
-                        Debug.Log("[--------SCIENCE+--------]: " + scienceType.scienceName + " add: " + sub.science);
+                        Debug.Log("[--------SCIENCE+--------]: " + scienceType.scienceName + " add to cache: " + sub.science);
                         Debug.Log("[--------SCIENCE+--------]: " + scienceType.scienceName + " cache: " + scienceType.scienceCache);
                     }
                 }
