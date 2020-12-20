@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 
 namespace SciencePlus
 {
@@ -10,43 +11,47 @@ namespace SciencePlus
     {
         void SaveScience(ConfigNode node)
         {
-            Debug.Log("[--------SCIENCE + --------]: SAVE");
-            if (node.HasNode("SCIENCE+"))
+            string name = KSPUtil.ApplicationRootPath + "saves/" + HighLogic.SaveFolder + "/Science+.sfs";
+            if (File.Exists(name))
             {
-                Debug.Log("[--------SCIENCE + --------]: HasNode check");
-                node = node.GetNode("SCIENCE+");
-                foreach (ScienceType scienceType in allScienceColors)
-                {
-                    Debug.Log("[--------SCIENCE + --------]: " + scienceType.color + "type");
-                    if (scienceType.scienceCache > 0)
-                    {
-                        float data;
-                        Debug.Log("[--------SCIENCE + --------]: " + scienceType.scienceName + " cache: " + scienceType.scienceCache);
-                        data = float.Parse(node.GetValue(scienceType.scienceName));
-                        Debug.Log("[--------SCIENCE + --------]: " + scienceType.scienceName + " old: " + data);
-                        float newScienceValue = data + scienceType.scienceCache;
-                        node.SetValue(scienceType.scienceName, newScienceValue);
-                        Debug.Log("[--------SCIENCE + --------]: " + scienceType.scienceName + " new: " + newScienceValue);
-                        scienceType.scienceCache = 0;
-                    }
-                }
+                Debug.Log("[--------SCIENCE + --------]: HASFILE");
+                node = ConfigNode.Load(KSPUtil.ApplicationRootPath + "saves/" + HighLogic.SaveFolder + "/Science+.sfs");
             }
             else
             {
-                Debug.Log("[--------SCIENCE + --------]: not HasNode");
+                Debug.Log("[--------SCIENCE + --------]: NOT HASFILE");
+                node = ConfigNode.Load(KSPUtil.ApplicationRootPath + "saves/" + HighLogic.SaveFolder + "/persistent.sfs");
+                node = node.GetNode("GAME");
                 node.AddNode("SCIENCE+");
                 node = node.GetNode("SCIENCE+");
+                Debug.Log("[--------SCIENCE + --------]: Start Colors");
                 foreach (ScienceType scienceType in allScienceColors)
                 {
-                    Debug.Log("[--------SCIENCE + --------]: " + scienceType.color + "type");
-                    if (!(node.HasValue(scienceType.scienceName)))
-                    {
-                        Debug.Log("[--------SCIENCE + --------]: " + scienceType.color + "not HasValue");
-                        node.AddValue(scienceType.scienceName, "0");
-                        Debug.Log("[--------SCIENCE + --------]: " + scienceType.scienceName + " NODE ADDED");
-
-                    }
+                    node.AddValue(scienceType.scienceName, "0");
                 }
+                Debug.Log("[--------SCIENCE + --------]: End Colors");
+                node.Save(KSPUtil.ApplicationRootPath + "saves/" + HighLogic.SaveFolder + "/Science+.sfs");
+                Debug.Log("[--------SCIENCE + --------]: Saved");
+            }
+
+            Debug.Log("[--------SCIENCE + --------]: " + node);
+            Debug.Log("[--------SCIENCE + --------]: SAVE");
+
+            foreach (ScienceType scienceType in allScienceColors)
+            {
+                Debug.Log("[--------SCIENCE + --------]: " + scienceType.color + "type");
+                if (scienceType.scienceCache > 0)
+                {
+                    float data;
+                    Debug.Log("[--------SCIENCE + --------]: " + scienceType.scienceName + " cache: " + scienceType.scienceCache);
+                    data = float.Parse(node.GetValue(scienceType.scienceName));
+                    Debug.Log("[--------SCIENCE + --------]: " + scienceType.scienceName + " old: " + data);
+                    float newScienceValue = data + scienceType.scienceCache;
+                    node.SetValue(scienceType.scienceName, newScienceValue);
+                    Debug.Log("[--------SCIENCE + --------]: " + scienceType.scienceName + " new: " + newScienceValue);
+                    scienceType.scienceCache = 0;
+                }
+                node.Save(KSPUtil.ApplicationRootPath + "saves/" + HighLogic.SaveFolder + "/Science+.sfs");
             }
         }
 
