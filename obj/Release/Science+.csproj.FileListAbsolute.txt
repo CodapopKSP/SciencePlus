@@ -1,0 +1,8 @@
+C:\Programs (SSD)\Science+\Output\GameData\Science+.dll
+C:\Programs (SSD)\Science+\Output\GameData\Science+.pdb
+C:\Programs (SSD)\Science+\obj\Release\Science+.csprojAssemblyReference.cache
+C:\Programs (SSD)\Science+\obj\Release\Science+.csproj.CoreCompileInputs.cache
+C:\Programs (SSD)\Science+\obj\Release\Science+.dll
+C:\Programs (SSD)\Science+\obj\Release\Science+.pdb
+C:\Programs (SSD)\Science+\Output\GameData\Science+\Science+.dll
+C:\Programs (SSD)\Science+\Output\GameData\Science+\Science+.pdb
