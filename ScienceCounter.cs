@@ -4,8 +4,8 @@ using System.IO;
 
 namespace SciencePlus
 {
-    [KSPAddon(KSPAddon.Startup.FlightAndKSC, false)]
-    //[KSPScenario(ScenarioCreationOptions.AddToNewGames, GameScenes.SPACECENTER | GameScenes.FLIGHT)]
+    //[KSPAddon(KSPAddon.Startup.FlightAndKSC, false)]
+    [KSPScenario(ScenarioCreationOptions.AddToNewGames, GameScenes.SPACECENTER | GameScenes.FLIGHT)]
     //public class SciencePlus : ScenarioModule
     public class SciencePlus : MonoBehaviour
     {
