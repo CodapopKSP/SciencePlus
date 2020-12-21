@@ -14,3 +14,5 @@ C:\Life (SSD)\Projects\Science+\obj\Release\Science+.csproj.CoreCompileInputs.ca
 C:\Life (SSD)\Projects\Science+\obj\Release\Science+.csproj.CopyComplete
 C:\Life (SSD)\Projects\Science+\obj\Release\Science+.dll
 C:\Life (SSD)\Projects\Science+\obj\Release\Science+.pdb
+C:\Life (SSD)\Projects\Science+\Output\GameData\Science+\Unity.Analytics.DataPrivacy.dll
+C:\Life (SSD)\Projects\Science+\Output\GameData\Science+\UnityEngine.AnimationModule.dll

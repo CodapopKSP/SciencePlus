@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// Assembly-CSharp look for "CanAfford" with "Currency.Science", also "RDController"
+
+
+
+using UnityEngine;
 
 namespace SciencePlus
 {
-    class Class1
-    {
-    }
+    //[KSPScenario(ScenarioCreationOptions.AddToNewGames, GameScenes.SPACECENTER | GameScenes.FLIGHT)]
+    //public class SciencePlus : ScenarioModule
 }

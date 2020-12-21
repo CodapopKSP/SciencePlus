@@ -4,42 +4,34 @@ using System.IO;
 
 namespace SciencePlus
 {
-    //[KSPAddon(KSPAddon.Startup.FlightAndKSC, false)]
-    [KSPScenario(ScenarioCreationOptions.AddToNewGames, GameScenes.SPACECENTER | GameScenes.FLIGHT)]
-    //public class SciencePlus : ScenarioModule
-    public class SciencePlus : MonoBehaviour
+    [KSPAddon(KSPAddon.Startup.FlightAndKSC, false)]
+    
+    public class ScienceCounter : MonoBehaviour
     {
         void SaveScience(ConfigNode node)
         {
+            Debug.Log("[--------SCIENCE + --------]: Saved.");
             string name = KSPUtil.ApplicationRootPath + "saves/" + HighLogic.SaveFolder + "/Science+.sfs";
             if (File.Exists(name))
             {
-                Debug.Log("[--------SCIENCE + --------]: HASFILE");
                 node = ConfigNode.Load(KSPUtil.ApplicationRootPath + "saves/" + HighLogic.SaveFolder + "/Science+.sfs");
             }
             else
             {
-                Debug.Log("[--------SCIENCE + --------]: NOT HASFILE");
                 node = ConfigNode.Load(KSPUtil.ApplicationRootPath + "saves/" + HighLogic.SaveFolder + "/persistent.sfs");
                 node = node.GetNode("GAME");
                 node.AddNode("SCIENCE+");
                 node = node.GetNode("SCIENCE+");
-                Debug.Log("[--------SCIENCE + --------]: Start Colors");
                 foreach (ScienceType scienceType in allScienceColors)
                 {
                     node.AddValue(scienceType.scienceName, "0");
+                    Debug.Log("[--------SCIENCE + --------]: " + scienceType.scienceName + ": " + 0);
                 }
-                Debug.Log("[--------SCIENCE + --------]: End Colors");
                 node.Save(KSPUtil.ApplicationRootPath + "saves/" + HighLogic.SaveFolder + "/Science+.sfs");
-                Debug.Log("[--------SCIENCE + --------]: Saved");
             }
-
-            Debug.Log("[--------SCIENCE + --------]: " + node);
-            Debug.Log("[--------SCIENCE + --------]: SAVE");
 
             foreach (ScienceType scienceType in allScienceColors)
             {
-                Debug.Log("[--------SCIENCE + --------]: " + scienceType.color + "type");
                 if (scienceType.scienceCache > 0)
                 {
                     float data;
@@ -64,7 +56,7 @@ namespace SciencePlus
         private void OnDestroy()
         {
             GameEvents.OnScienceRecieved.Remove(ScienceProcessingCallback);
-            //GameEvents.onGameStateSave.Remove(SaveScience);
+            GameEvents.onGameStateSave.Remove(SaveScience);
         }
 
         void ScienceProcessingCallback(float sciValue, ScienceSubject sub, ProtoVessel pv, bool test)
