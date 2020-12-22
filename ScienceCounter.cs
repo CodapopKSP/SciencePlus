@@ -4,12 +4,16 @@ using System.IO;
 
 namespace SciencePlus
 {
-    [KSPAddon(KSPAddon.Startup.FlightAndKSC, false)]
+    [KSPAddon(KSPAddon.Startup.FlightAndKSC, true)]
     
     public class ScienceCounter : MonoBehaviour
     {
         void SaveScience(ConfigNode node)
         {
+            foreach (ScienceType scienceType in allScienceColors)
+            {
+                Debug.Log("[--------SCIENCE+--------1]: " + scienceType.scienceName + " " + scienceType.scienceBank + " " + scienceType.scienceCache);
+            }
             ConfigNode node2 = node.GetNode("SCIENCE+");
             bool flag = node2 == null;
             if (flag)
@@ -24,17 +28,38 @@ namespace SciencePlus
                 }
 
             }
-            
+            foreach (ScienceType scienceType in allScienceColors)
+            {
+                Debug.Log("[--------SCIENCE+--------2]: " + scienceType.scienceName + " " + scienceType.scienceBank + " " + scienceType.scienceCache);
+            }
+
             foreach (ScienceType scienceType in allScienceColors)
             {
                 ConfigNode node3 = node2.GetNode(scienceType.scienceName);
                 node3.SetValue("SCI", scienceType.scienceBank + scienceType.scienceCache);
+                Debug.Log("[--------SCIENCE+--------]: Saved " + scienceType.scienceName + " " + (scienceType.scienceBank + scienceType.scienceCache));
+                scienceType.scienceBank = scienceType.scienceBank + scienceType.scienceCache;
+                scienceType.scienceCache = 0;
             }
         }
 
         void LoadScience(ConfigNode node)
         {
-
+            foreach (ScienceType scienceType in allScienceColors)
+            {
+                Debug.Log("[--------SCIENCE+--------3]: " + scienceType.scienceName + " " + scienceType.scienceBank + " " + scienceType.scienceCache);
+            }
+            ConfigNode node2 = node.GetNode("SCIENCE+");
+            bool flag = node2 == null;
+            if (!flag)
+            {
+                foreach (ScienceType scienceType in allScienceColors)
+                {
+                    ConfigNode node3 = node2.GetNode(scienceType.scienceName);
+                    scienceType.scienceBank = float.Parse(node3.GetValue("SCI"));
+                    Debug.Log("[--------SCIENCE+--------]: Loaded " + scienceType.scienceName + " " + scienceType.scienceBank);
+                }
+            }
         }
 
         private void Start()
@@ -48,10 +73,15 @@ namespace SciencePlus
         {
             GameEvents.OnScienceRecieved.Remove(ScienceProcessingCallback);
             GameEvents.onGameStateSave.Remove(SaveScience);
+            GameEvents.onGameStateLoad.Remove(LoadScience);
         }
 
         void ScienceProcessingCallback(float sciValue, ScienceSubject sub, ProtoVessel pv, bool test)
         {
+            foreach (ScienceType scienceType in allScienceColors)
+            {
+                Debug.Log("[--------SCIENCE+--------4]: " + scienceType.scienceName + " " + scienceType.scienceBank + " " + scienceType.scienceCache);
+            }
             foreach (ScienceType scienceType in allScienceColors)
             {
                 foreach (string body in scienceType.bodyList)
