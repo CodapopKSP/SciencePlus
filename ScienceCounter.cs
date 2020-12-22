@@ -16,15 +16,19 @@ namespace SciencePlus
             {
                 node.AddNode("SCIENCE+");
                 node2 = node.GetNode("SCIENCE+");
+                foreach (ScienceType scienceType in allScienceColors)
+                {
+                    node2.AddNode(scienceType.scienceName);
+                    ConfigNode node3 = node2.GetNode(scienceType.scienceName);
+                    node3.AddValue("SCI", 0);
+                }
+
             }
-            //node2.SetValue("firstRun", FirstKerbaliser.instance.firstRun, true);
             
             foreach (ScienceType scienceType in allScienceColors)
             {
-                node2.RemoveNodes(scienceType.scienceName);
-                ConfigNode configNode = new ConfigNode(scienceType.scienceName);
-                configNode.AddValue("SCI", scienceType.scienceBank + scienceType.scienceCache);
-                node2.AddNode(configNode);
+                ConfigNode node3 = node2.GetNode(scienceType.scienceName);
+                node3.SetValue("SCI", scienceType.scienceBank + scienceType.scienceCache);
             }
         }
 
