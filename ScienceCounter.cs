@@ -6,48 +6,63 @@ namespace SciencePlus
 {
     [KSPAddon(KSPAddon.Startup.FlightAndKSC, false)]
 
-    public class TestCounter : MonoBehaviour
+    public class ScienceCounter : MonoBehaviour
     {
-        void SaveTest(ConfigNode node)
-        {
-            bool flag = true;//File.Exists(KSPUtil.ApplicationRootPath + "saves/" + HighLogic.SaveFolder + "/Science+.txt");
-            if (!flag)
-            {
-                //File.Create(KSPUtil.ApplicationRootPath + "saves/" + HighLogic.SaveFolder + "/Science+.txt");
-                node.AddNode("TEST-NODE");
-                ConfigNode node2 = node.GetNode("TEST-NODE");
-                node2.AddValue("VALUE", number);
-                Debug.Log("[--------TEST--------]: Save " + number);
-            }
-            else
-            {
-                ConfigNode node2 = node.GetNode("TEST-NODE");
-                node2.SetValue("VALUE", 5);
-                Debug.Log("[--------TEST--------]: Save 5");
-            }
-        }
-
-        void LoadTest(ConfigNode node)
-        {
-            ConfigNode node2 = node.GetNode("TEST-NODE");
-            int test = int.Parse(node2.GetValue("VALUE"));
-            Debug.Log("[--------TEST--------]: Load " + test);
-            number = number + 1;
-        }
 
         private void Start()
         {
-            GameEvents.onGameStateSave.Add(SaveTest);
-            //GameEvents.onGameStateLoad.Add(LoadTest);
+            GameEvents.OnScienceRecieved.Add(ScienceProcessingCallback);
         }
 
         private void OnDestroy()
         {
-            GameEvents.onGameStateSave.Remove(SaveTest);
-            //GameEvents.onGameStateSave.Remove(LoadTest);
+            GameEvents.OnScienceRecieved.Remove(ScienceProcessingCallback);
         }
 
-        public int number = 0;
+        void ScienceProcessingCallback(float sciValue, ScienceSubject sub, ProtoVessel pv, bool test)
+        {
+            foreach (ScienceType scienceType in allScienceColors)
+            {
+                foreach (string body in scienceType.bodyList)
+                {
+                    if (sub.title.Contains(body))
+                    {
+                        float newTotal = scienceType.scienceCache + sub.science;
+                        scienceType.scienceCache = newTotal;
+                        Debug.Log("[--------SCIENCE+--------]: " + scienceType.scienceName + " add to cache: " + sub.science);
+                        Debug.Log("[--------SCIENCE+--------]: " + scienceType.scienceName + " cache: " + scienceType.scienceCache);
+                    }
+                }
+            }
+        }
 
+        public class ScienceType
+        {
+            public ScienceType(string color, List<string> bodyList, float scienceBank = 0, float scienceCache = 0)
+            {
+                this.color = color;
+                this.scienceName = color + "Science";
+                this.bodyList = bodyList;
+                this.scienceBank = scienceBank;
+                this.scienceCache = scienceCache;
+            }
+            public string color;
+            public string scienceName;
+            public List<string> bodyList;
+            public float scienceBank;
+            public float scienceCache;
+        }
+
+        List<ScienceType> allScienceColors = new List<ScienceType>()
+        {
+            new ScienceType("Red",    new List<string>() { "Moho",    "Duna"            }),
+            new ScienceType("Orange", new List<string>() { "Dres",    "Vall"            }),
+            new ScienceType("Yellow", new List<string>() { "Mun",     "Pol"             }),
+            new ScienceType("Green",  new List<string>() { "Minmus",  "Ike"             }),
+            new ScienceType("Blue",   new List<string>() { "Kerbin",  "Eeloo"           }),
+            new ScienceType("Purple", new List<string>() { "Eve",     "Bop"             }),
+            new ScienceType("Gold",   new List<string>() { "Kerbol",  "Jool",   "Tylo"  }),
+            new ScienceType("Silver", new List<string>() { "Gilly",   "Laythe"          })
+        };
     }
 }
