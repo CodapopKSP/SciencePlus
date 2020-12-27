@@ -13,22 +13,25 @@ namespace SciencePlus
 
     public class SciencePlus : ScenarioModule
     {
-        int number;
         public override void OnSave(ConfigNode node)
         {
-
-
             ConfigNode configNode = new ConfigNode("Science");
-            configNode.AddValue("Red", number);
+            foreach (ScienceCounter.ScienceType scienceType in ScienceCounter.instance.allScienceColors)
+            {
+                scienceType.scienceBank = scienceType.scienceBank + scienceType.scienceCache;
+                configNode.AddValue(scienceType.color, scienceType.scienceBank);
+                scienceType.scienceCache = 0;
+            }
             node.AddNode(configNode);
-
         }
 
         public override void OnLoad(ConfigNode node)
         {
             node = node.GetNode("Science");
-            number = int.Parse(node.GetValue("Red"));
-            number += 1;
+            foreach (ScienceCounter.ScienceType scienceType in ScienceCounter.instance.allScienceColors)
+            {
+                scienceType.scienceBank = int.Parse(node.GetValue(scienceType.color));
+            }
         }
     }
 }

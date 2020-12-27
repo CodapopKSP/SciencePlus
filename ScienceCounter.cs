@@ -4,10 +4,14 @@ using System.IO;
 
 namespace SciencePlus
 {
-    [KSPAddon(KSPAddon.Startup.FlightAndKSC, false)]
+    [KSPAddon(KSPAddon.Startup.FlightAndKSC, true)]
 
     public class ScienceCounter : MonoBehaviour
     {
+        private void Awake()
+        {
+            ScienceCounter.instance = this;
+        }
 
         private void Start()
         {
@@ -53,7 +57,7 @@ namespace SciencePlus
             public float scienceCache;
         }
 
-        List<ScienceType> allScienceColors = new List<ScienceType>()
+        public List<ScienceType> allScienceColors = new List<ScienceType>()
         {
             new ScienceType("Red",    new List<string>() { "Moho",    "Duna"            }),
             new ScienceType("Orange", new List<string>() { "Dres",    "Vall"            }),
@@ -64,5 +68,7 @@ namespace SciencePlus
             new ScienceType("Gold",   new List<string>() { "Kerbol",  "Jool",   "Tylo"  }),
             new ScienceType("Silver", new List<string>() { "Gilly",   "Laythe"          })
         };
+
+        public static ScienceCounter instance;
     }
 }
