@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using System.IO;
 
 namespace SciencePlus
 {
-    [KSPAddon(KSPAddon.Startup.FlightAndKSC, true)]
+    [KSPAddon(KSPAddon.Startup.FlightAndKSC, false)]
 
     public class ScienceCounter : MonoBehaviour
     {
@@ -23,7 +22,7 @@ namespace SciencePlus
             GameEvents.OnScienceRecieved.Remove(ScienceProcessingCallback);
         }
 
-        void ScienceProcessingCallback(float sciValue, ScienceSubject sub, ProtoVessel pv, bool test)
+        public void ScienceProcessingCallback(float sciValue, ScienceSubject sub, ProtoVessel pv, bool test)
         {
             foreach (ScienceType scienceType in allScienceColors)
             {

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-using System.IO;
+﻿using UnityEngine;
 
 namespace SciencePlus
 {
@@ -8,7 +6,9 @@ namespace SciencePlus
     {
         GameScenes.SPACECENTER,
         GameScenes.FLIGHT,
-        GameScenes.TRACKSTATION
+        GameScenes.TRACKSTATION,
+        GameScenes.EDITOR,
+        GameScenes.PSYSTEM
     })]
 
     public class SciencePlus : ScenarioModule
@@ -18,7 +18,7 @@ namespace SciencePlus
             ConfigNode configNode = new ConfigNode("Science");
             foreach (ScienceCounter.ScienceType scienceType in ScienceCounter.instance.allScienceColors)
             {
-                scienceType.scienceBank = scienceType.scienceBank + scienceType.scienceCache;
+                scienceType.scienceBank += scienceType.scienceCache;
                 configNode.AddValue(scienceType.color, scienceType.scienceBank);
                 scienceType.scienceCache = 0;
             }
@@ -30,7 +30,7 @@ namespace SciencePlus
             node = node.GetNode("Science");
             foreach (ScienceCounter.ScienceType scienceType in ScienceCounter.instance.allScienceColors)
             {
-                scienceType.scienceBank = int.Parse(node.GetValue(scienceType.color));
+                scienceType.scienceBank = float.Parse(node.GetValue(scienceType.color));
             }
         }
     }
