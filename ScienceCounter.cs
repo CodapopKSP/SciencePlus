@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 
 namespace SciencePlus
 {
@@ -9,9 +10,10 @@ namespace SciencePlus
     {
         void SaveTest(ConfigNode node)
         {
-            bool flag = node.HasNode("TEST-NODE");
+            bool flag = true;//File.Exists(KSPUtil.ApplicationRootPath + "saves/" + HighLogic.SaveFolder + "/Science+.txt");
             if (!flag)
             {
+                //File.Create(KSPUtil.ApplicationRootPath + "saves/" + HighLogic.SaveFolder + "/Science+.txt");
                 node.AddNode("TEST-NODE");
                 ConfigNode node2 = node.GetNode("TEST-NODE");
                 node2.AddValue("VALUE", number);
@@ -36,13 +38,13 @@ namespace SciencePlus
         private void Start()
         {
             GameEvents.onGameStateSave.Add(SaveTest);
-            GameEvents.onGameStateLoad.Add(LoadTest);
+            //GameEvents.onGameStateLoad.Add(LoadTest);
         }
 
         private void OnDestroy()
         {
             GameEvents.onGameStateSave.Remove(SaveTest);
-            GameEvents.onGameStateSave.Remove(LoadTest);
+            //GameEvents.onGameStateSave.Remove(LoadTest);
         }
 
         public int number = 0;
