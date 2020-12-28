@@ -70,6 +70,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ScienceConfig.cs" />
     <Compile Include="ScienceCounter.cs" />
     <Compile Include="SciencePlusScenario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
