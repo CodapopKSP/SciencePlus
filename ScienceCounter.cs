@@ -24,8 +24,6 @@ namespace SciencePlus
 
         public void ScienceProcessingCallback(float sciValue, ScienceSubject sub, ProtoVessel pv, bool test)
         {
-            Debug.Log("[--------SCIENCE+--------]: " + sub.title);
-            
             bool hasPlanet = false;
             foreach (ScienceType scienceType in allScienceColors)
             {
@@ -35,10 +33,8 @@ namespace SciencePlus
                     {
                         float newTotal = scienceType.scienceCache + sub.science;
                         scienceType.scienceCache = newTotal;
-                        Debug.Log("[--------SCIENCE+--------]: " + scienceType.scienceName + " add to cache: " + sub.science);
-                        Debug.Log("[--------SCIENCE+--------]: " + scienceType.scienceName + " cache: " + scienceType.scienceCache);
+                        Debug.Log("[--------SCIENCE+--------]: " + scienceType.scienceName + " add " + sub.science);
                         hasPlanet = true;
-                        Debug.Log("[--------SCIENCE+--------]: Bool = " + hasPlanet);
                     }
                 }
             }
@@ -46,15 +42,13 @@ namespace SciencePlus
             if (!hasPlanet)
             {
                 int randomNumber = random.Next(8);
-                Debug.Log("[--------SCIENCE+--------]: RandomNumber = " + randomNumber);
                 foreach (ScienceType scienceType in allScienceColors)
                 {
                     if (randomNumber == scienceType.randInt)
                     {
                         float newTotal = scienceType.scienceCache + sub.science;
                         scienceType.scienceCache = newTotal;
-                        Debug.Log("[--------SCIENCE+--------]: " + scienceType.scienceName + " add to cache: " + sub.science);
-                        Debug.Log("[--------SCIENCE+--------]: " + scienceType.scienceName + " cache: " + scienceType.scienceCache);
+                        Debug.Log("[--------SCIENCE+--------]: " + scienceType.scienceName + " random add  " + sub.science);
                     }
                 }
             }
