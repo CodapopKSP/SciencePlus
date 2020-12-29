@@ -7,8 +7,6 @@ namespace SciencePlus
         GameScenes.SPACECENTER,
         GameScenes.FLIGHT,
         GameScenes.TRACKSTATION,
-        GameScenes.EDITOR,
-        GameScenes.PSYSTEM
     })]
 
     public class SciencePlus : ScenarioModule

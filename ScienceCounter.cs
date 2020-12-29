@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using System;
 
 namespace SciencePlus
 {
@@ -8,30 +7,9 @@ namespace SciencePlus
 
     public class ScienceCounter : MonoBehaviour
     {
-        static ConfigNode sciNode = ConfigNode.Load(KSPUtil.ApplicationRootPath + "GameData/Squad/Resources/ScienceDefs.cfg");
-        ConfigNode[] sciNodes = sciNode.GetNodes("EXPERIMENT_DEFINITION");
-        List<Experiment> ExperimentList = new List<Experiment>();
-
         private void Awake()
         {
             ScienceCounter.instance = this;
-            foreach (ConfigNode experiment in sciNodes)
-            {
-                string expName = experiment.GetValue("title");
-                int expbV = int.Parse(experiment.GetValue("baseValue"));
-                ExperimentList.Add(new Experiment(expName, expbV));
-            }
-        }
-
-        public class Experiment
-        {
-            public Experiment(string name, int baseValue)
-            {
-                this.name = name;
-                this.baseValue = baseValue;
-            }
-            public string name;
-            public int baseValue;
         }
 
         private void Start()
@@ -46,23 +24,6 @@ namespace SciencePlus
 
         public void ScienceProcessingCallback(float sciValue, ScienceSubject sub, ProtoVessel pv, bool test)
         {
-
-
-
-
-            foreach (Experiment expNode in ExperimentList)
-            {
-                if (expNode.name.Contains("#autoLOC_501009 //#autoLOC_501009 = "))
-                {
-                    Debug.Log("[--------SCIENCE+--------]: GOT IT");
-                }
-                Debug.Log("[--------SCIENCE+--------]: " + expNode.name);
-                Debug.Log("[--------SCIENCE+--------]: " + expNode.baseValue);
-            }
-
-
-
-
             bool hasPlanet = false;
             foreach (ScienceType scienceType in allScienceColors)
             {
@@ -70,9 +31,9 @@ namespace SciencePlus
                 {
                     if (sub.title.Contains(body))
                     {
-                        float newTotal = scienceType.scienceCache + sub.science;
+                        float newTotal = scienceType.scienceCache + sciValue;
                         scienceType.scienceCache = newTotal;
-                        Debug.Log("[--------SCIENCE+--------]: " + scienceType.scienceName + " add " + sub.science);
+                        Debug.Log("[--------SCIENCE+--------]: " + scienceType.scienceName + " increased by " + sciValue + "!");
                         hasPlanet = true;
                     }
                 }
@@ -85,9 +46,9 @@ namespace SciencePlus
                 {
                     if (randomNumber == scienceType.randInt)
                     {
-                        float newTotal = scienceType.scienceCache + sub.science;
+                        float newTotal = scienceType.scienceCache + sciValue;
                         scienceType.scienceCache = newTotal;
-                        Debug.Log("[--------SCIENCE+--------]: " + scienceType.scienceName + " random add  " + sub.science);
+                        Debug.Log("[--------SCIENCE+--------]: " + scienceType.scienceName + " randomly increased by  " + sciValue + "!");
                     }
                 }
             }
@@ -128,3 +89,7 @@ namespace SciencePlus
         public static ScienceCounter instance;
     }
 }
+
+
+
+
