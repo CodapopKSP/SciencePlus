@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace SciencePlus
+namespace TestAddon
 {
     [KSPAddon(KSPAddon.Startup.AllGameScenes, false)]
 
@@ -18,17 +18,14 @@ namespace SciencePlus
             GameEvents.onGUIRnDComplexDespawn.Remove(HideButton);
         }
 
-        private Rect windowPosition = new Rect();
-
         private void SpawnButton()
         {
-
+            CoolUI.ShowGUI();
         }
 
         private void HideButton()
         {
-
+            CoolUI.Destroy();
         }
-
     }
 }

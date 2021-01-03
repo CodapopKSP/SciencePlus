@@ -1,8 +1,6 @@
-﻿using UnityEngine;
-
-namespace SciencePlus
+﻿namespace SciencePlus
 {
-    [KSPScenario(ScenarioCreationOptions.AddToAllGames, new GameScenes[]
+    [KSPScenario(ScenarioCreationOptions.AddToNewGames, new GameScenes[]
     {
         GameScenes.SPACECENTER,
         GameScenes.FLIGHT,
