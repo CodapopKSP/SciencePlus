@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace TestAddon
+namespace SciencePlus
 {
     [KSPAddon(KSPAddon.Startup.AllGameScenes, false)]
 
@@ -8,24 +8,18 @@ namespace TestAddon
     {
         private void Start()
         {
-            GameEvents.onGUIRnDComplexSpawn.Add(SpawnButton);
-            GameEvents.onGUIRnDComplexDespawn.Add(HideButton);
+            //GameEvents.onGUIRnDComplexSpawn.Add(SpawnButton);
+            GameEvents.OnTechnologyResearched.Add(PressButtonCallback);
         }
 
         private void OnDestroy()
         {
-            GameEvents.onGUIRnDComplexSpawn.Remove(SpawnButton);
-            GameEvents.onGUIRnDComplexDespawn.Remove(HideButton);
+            //GameEvents.onGUIRnDComplexSpawn.Remove(SpawnButton);
         }
 
-        private void SpawnButton()
+        private void PressButtonCallback(GameEvents.HostTargetAction<RDTech, RDTech.OperationResult> hello)
         {
-            CoolUI.ShowGUI();
-        }
-
-        private void HideButton()
-        {
-            CoolUI.Destroy();
+            Debug.Log("[--------SCIENCE+--------]: There's your button!");
         }
     }
 }
