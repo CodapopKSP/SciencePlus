@@ -8,8 +8,9 @@ namespace SciencePlus
     {
         private void Start()
         {
-            //GameEvents.onGUIRnDComplexSpawn.Add(SpawnButton);
+            GameEvents.onGUIRnDComplexSpawn.Add(RnDStuff);
             GameEvents.OnTechnologyResearched.Add(PressButtonCallback);
+
         }
 
         private void OnDestroy()
@@ -17,9 +18,22 @@ namespace SciencePlus
             //GameEvents.onGUIRnDComplexSpawn.Remove(SpawnButton);
         }
 
-        private void PressButtonCallback(GameEvents.HostTargetAction<RDTech, RDTech.OperationResult> hello)
+        private void RnDStuff()
         {
-            Debug.Log("[--------SCIENCE+--------]: There's your button!");
+            if (ResearchAndDevelopment.Instance != null)
+            {
+                Debug.Log("[--------SCIENCE+--------]: testing 1 2");
+                ResearchAndDevelopment.RefreshTechTreeUI();
+
+            }
+        }
+
+        private void PressButtonCallback(GameEvents.HostTargetAction<RDTech, RDTech.OperationResult> targetAction)
+        {
+            Debug.Log("[--------SCIENCE+--------]: There's your button!" + targetAction.host.scienceCost);
+            Debug.Log("[--------SCIENCE+--------]: There's your button!" + targetAction.host.techID);
+            Debug.Log("[--------SCIENCE+--------]: There's your button!" + targetAction.host.title);
+            Debug.Log("[--------SCIENCE+--------]: There's your button!" + targetAction.host.host);
         }
     }
 }
