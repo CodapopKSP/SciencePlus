@@ -59,7 +59,7 @@ namespace SciencePlus
             public ScienceType(string color, List<string> bodyList, int randInt, float scienceBank = 0, float scienceCache = 0)
             {
                 this.color = color;
-                this.scienceName = color + "Science";
+                this.scienceName = color + " Science";
                 this.bodyList = bodyList;
                 this.randInt = randInt;
                 this.scienceBank = scienceBank;

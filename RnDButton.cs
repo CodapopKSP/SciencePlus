@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 
 namespace SciencePlus
 {
@@ -21,14 +22,12 @@ namespace SciencePlus
 
         private void RnDStuff()
         {
-            if (ResearchAndDevelopment.Instance != null)
-            {
-                ResearchAndDevelopment.Instance.SetScience(0, TransactionReasons.RnDs);
-            }
+            ResearchAndDevelopment.Instance.SetScience(0, TransactionReasons.RnDs);
         }
 
         public void PressButtonCallback(GameEvents.HostTargetAction<RDTech, RDTech.OperationResult> targetAction)
         {
+            DateTime now = DateTime.Now;
             string color1 = "noColor";
             string color2 = "noColor";
 

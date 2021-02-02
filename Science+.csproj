@@ -64,6 +64,9 @@
       <HintPath>..\..\..\Programs (SSD)\Steam\steamapps\common\Kerbal Space Program - 1.11.0 Science+ Test Build\KSP_x64_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="UnityEngine.IMGUIModule">
+      <HintPath>..\..\..\Programs (SSD)\Steam\steamapps\common\Kerbal Space Program - 1.11.0 Controller Test Build\KSP_x64_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.InputLegacyModule">
       <HintPath>..\..\..\Programs (SSD)\Steam\steamapps\common\Kerbal Space Program - 1.11.0 Science+ Test Build\KSP_x64_Data\Managed\UnityEngine.InputLegacyModule.dll</HintPath>
     </Reference>
@@ -76,11 +79,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="Toolbar.cs" />
     <Compile Include="RnDButton.cs" />
     <Compile Include="ScienceCounter.cs" />
     <Compile Include="SciencePlusScenario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Window.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

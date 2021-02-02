@@ -18,3 +18,4 @@ C:\Life (SSD)\Projects\Science+\Output\GameData\Science+\Unity.Analytics.DataPri
 C:\Life (SSD)\Projects\Science+\Output\GameData\Science+\UnityEngine.AnimationModule.dll
 C:\Life (SSD)\Projects\Science+\Output\GameData\Science+\UnityEngine.AssetBundleModule.dll
 C:\Life (SSD)\Projects\Science+\Output\GameData\Science+\UnityEngine.UIModule.dll
+C:\Life (SSD)\Projects\Science+\Output\GameData\Science+\UnityEngine.IMGUIModule.dll
