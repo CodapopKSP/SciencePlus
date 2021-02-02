@@ -25,7 +25,7 @@ namespace SciencePlus
         public void ScienceProcessingCallback(float sciValue, ScienceSubject sub, ProtoVessel pv, bool test)
         {
             bool hasPlanet = false;
-            foreach (ScienceType scienceType in allScienceColors)
+            foreach (ScienceType scienceType in allScienceTypes)
             {
                 foreach (string body in scienceType.bodyList)
                 {
@@ -42,7 +42,7 @@ namespace SciencePlus
             if (!hasPlanet)
             {
                 int randomNumber = random.Next(8);
-                foreach (ScienceType scienceType in allScienceColors)
+                foreach (ScienceType scienceType in allScienceTypes)
                 {
                     if (randomNumber == scienceType.randInt)
                     {
@@ -56,16 +56,16 @@ namespace SciencePlus
 
         public class ScienceType
         {
-            public ScienceType(string color, List<string> bodyList, int randInt, float scienceBank = 0, float scienceCache = 0)
+            public ScienceType(string type, List<string> bodyList, int randInt, float scienceBank = 0, float scienceCache = 0)
             {
-                this.color = color;
-                this.scienceName = color + " Science";
+                this.type = type;
+                this.scienceName = type + " Science";
                 this.bodyList = bodyList;
                 this.randInt = randInt;
                 this.scienceBank = scienceBank;
                 this.scienceCache = scienceCache;
             }
-            public string color;
+            public string type;
             public string scienceName;
             public List<string> bodyList;
             public int randInt;
@@ -73,7 +73,7 @@ namespace SciencePlus
             public float scienceCache;
         }
 
-        public List<ScienceType> allScienceColors = new List<ScienceType>()
+        public List<ScienceType> allScienceTypes = new List<ScienceType>()
         {
             new ScienceType("Red",    new List<string>() { "Moho",    "Duna"            }, 0),
             new ScienceType("Orange", new List<string>() { "Dres",    "Vall"            }, 1),

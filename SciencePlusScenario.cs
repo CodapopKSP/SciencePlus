@@ -12,10 +12,10 @@
         public override void OnSave(ConfigNode node)
         {
             ConfigNode configNode = new ConfigNode("Science");
-            foreach (ScienceCounter.ScienceType scienceType in ScienceCounter.instance.allScienceColors)
+            foreach (ScienceCounter.ScienceType scienceType in ScienceCounter.instance.allScienceTypes)
             {
                 scienceType.scienceBank += scienceType.scienceCache;
-                configNode.AddValue(scienceType.color, scienceType.scienceBank);
+                configNode.AddValue(scienceType.type, scienceType.scienceBank);
                 scienceType.scienceCache = 0;
             }
             node.AddNode(configNode);
@@ -24,9 +24,9 @@
         public override void OnLoad(ConfigNode node)
         {
             node = node.GetNode("Science");
-            foreach (ScienceCounter.ScienceType scienceType in ScienceCounter.instance.allScienceColors)
+            foreach (ScienceCounter.ScienceType scienceType in ScienceCounter.instance.allScienceTypes)
             {
-                scienceType.scienceBank = float.Parse(node.GetValue(scienceType.color));
+                scienceType.scienceBank = float.Parse(node.GetValue(scienceType.type));
             }
         }
     }
