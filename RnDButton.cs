@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System;
+using System.Collections.Generic;
 
 namespace SciencePlus
 {
@@ -27,9 +28,7 @@ namespace SciencePlus
 
         public void PressButtonCallback(GameEvents.HostTargetAction<RDTech, RDTech.OperationResult> targetAction)
         {
-            DateTime now = DateTime.Now;
-            string type1 = "noType";
-            string type2 = "noType";
+            List<string> sciTypes = new List<string>();
 
             ConfigNode TechNode = ConfigNode.Load(KSPUtil.ApplicationRootPath + "GameData/ModuleManager.TechTree");
             TechNode = TechNode.GetNode("TechTree");
@@ -37,31 +36,31 @@ namespace SciencePlus
             {
                 if (RDNode.GetValue("id") == targetAction.host.techID)
                 {
-                    if (RDNode.GetValue("scitype1") != null)
+                    string[] sciTypesArray = RDNode.GetValues("scitype");
+                    foreach (string scitype in sciTypesArray)
                     {
-                        type1 = RDNode.GetValue("scitype1");
-                    }
-                    if (RDNode.GetValue("scitype2") != null)
-                    {
-                        type2 = RDNode.GetValue("scitype2");
+                        sciTypes.Add(scitype);
                     }
                 }
             }
 
             if (ResearchAndDevelopment.Instance.GetTechState(targetAction.host.techID) == null)
             {
-                bool colorcheck = true;
+                bool typecheck = true;
                 foreach (ScienceCounter.ScienceType scienceType in ScienceCounter.instance.allScienceTypes)
                 {
-                    if ((type1 == scienceType.type) | (type2 == scienceType.type))
+                    foreach (string scitype in sciTypes)
                     {
-                        if (scienceType.scienceBank < targetAction.host.scienceCost)
+                        if (scitype==scienceType.type)
                         {
-                            colorcheck = false;
+                            if (scienceType.scienceBank < targetAction.host.scienceCost)
+                            {
+                                typecheck = false;
+                            }
                         }
                     }
                 }
-                if (colorcheck)
+                if (typecheck)
                 {
                     ResearchAndDevelopment.Instance.AddScience(targetAction.host.scienceCost, TransactionReasons.RnDs);
                 }
@@ -71,9 +70,12 @@ namespace SciencePlus
             {
                 foreach (ScienceCounter.ScienceType scienceType in ScienceCounter.instance.allScienceTypes)
                 {
-                    if ((type1 == scienceType.type) | (type2 == scienceType.type))
+                    foreach (string scitype in sciTypes)
                     {
-                        scienceType.scienceCache = scienceType.scienceCache - targetAction.host.scienceCost;
+                        if (scitype==scienceType.type)
+                        {
+                            scienceType.scienceCache = scienceType.scienceCache - targetAction.host.scienceCost;
+                        }
                     }
                 }
             }
