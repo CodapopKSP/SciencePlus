@@ -41,7 +41,7 @@ namespace SciencePlus
 
             if (!hasPlanet)
             {
-                int randomNumber = random.Next(8);
+                int randomNumber = random.Next(allScienceTypes.Count);
                 foreach (ScienceType scienceType in allScienceTypes)
                 {
                     if (randomNumber == scienceType.randInt)
@@ -74,6 +74,28 @@ namespace SciencePlus
         }
 
         public List<ScienceType> allScienceTypes = new List<ScienceType>()
+
+        /*
+        public ScienceType BuildType()
+        {
+            ConfigNode SciencePlusNode = ConfigNode.Load(KSPUtil.ApplicationRootPath + "GameData/Science+/Science+.cfg");
+            ConfigNode[] ScienceTypeNodes = SciencePlusNode.GetNodes();
+            int counter = 0;
+            foreach (ConfigNode typeNode in ScienceTypeNodes)
+            {
+                List<string> typeIDs = new List<string>();
+                string[] typeIDsArray = typeNode.GetValues("id");
+                foreach (string typeID in typeIDsArray)
+                {
+                    typeIDs.Add(typeID);
+                }
+
+                allScienceTypes.Add(new ScienceType(typeNode.GetValue("type"), typeIDs, counter));
+                counter += 1;
+            }
+        }
+        */
+
         {
             new ScienceType("Red",    new List<string>() { "Moho",    "Duna"            }, 0),
             new ScienceType("Orange", new List<string>() { "Dres",    "Vall"            }, 1),

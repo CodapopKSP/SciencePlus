@@ -1,4 +1,6 @@
-﻿namespace SciencePlus
+﻿using System.Collections.Generic;
+
+namespace SciencePlus
 {
     [KSPScenario(ScenarioCreationOptions.AddToNewGames, new GameScenes[]
     {
