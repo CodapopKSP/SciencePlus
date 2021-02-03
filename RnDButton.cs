@@ -41,7 +41,6 @@ namespace SciencePlus
         {
             _buttonImage = GetComponent<Image>();
             _button = GetComponent<Button>();
-
             _originalEvent = _button.onClick;
             _button.onClick = new Button.ButtonClickedEvent();
             _button.onClick.AddListener(OnButtonClicked);
@@ -61,24 +60,47 @@ namespace SciencePlus
         private void ToggleButton(bool enable)
         {
             _button.enabled = enable;
-            _buttonImage.color = enable ? Color.white : Color.grey;
+            _buttonImage.color = enable ? Color.white : Color.clear;
         }
 
         private void OnButtonClicked()
         {
             if (IsNodeResearchable())
             {
+                List<string> sciTypes = new List<string>();
+                ConfigNode TechNode = ConfigNode.Load(KSPUtil.ApplicationRootPath + "GameData/ModuleManager.TechTree");
+                TechNode = TechNode.GetNode("TechTree");
+                foreach (ConfigNode RDNode in TechNode.GetNodes("RDNode"))
+                {
+                    if (RDNode.GetValue("id") == RDController.Instance.node_selected.tech.techID)
+                    {
+                        string[] sciTypesArray = RDNode.GetValues("scitype");
+                        foreach (string scitype in sciTypesArray)
+                        {
+                            sciTypes.Add(scitype);
+                        }
+                    }
+                }
+
+                string sciTypesDialog = "";
+                foreach (string scitype in sciTypes)
+                {
+                    sciTypesDialog = sciTypesDialog + "\n" + scitype + " Science";
+                }
+                
                 PopupDialog.SpawnPopupDialog(
                     new Vector2(0.5f, 0.5f),
                     new Vector2(0.5f, 0.5f),
                     new MultiOptionDialog(
-                        "ConfirmResearchDialog", $"Are you sure you want to purchase {RDController.Instance.node_selected.tech.title}?",
-                        "Confirm?",
-                        UISkinManager.GetSkin("KSP window 7"),
+                        "ConfirmResearchDialog", $"Are you sure you want to purchase {RDController.Instance.node_selected.tech.title}? This node requires: ",
+                        "Science+",
+                        UISkinManager.GetSkin("KSP window 2"),
+                        new DialogGUILabel(sciTypesDialog),
+                        new DialogGUIFlexibleSpace(),
                         new DialogGUIButton("Yes", UserConfirmedPurchase, true),
                         new DialogGUIButton("No", () => { }, true)),
                     false,
-                    UISkinManager.GetSkin("KSP window 7"));
+                    UISkinManager.GetSkin("KSP window 2"));
             }
             
             else
@@ -104,6 +126,35 @@ namespace SciencePlus
             var request = new Request { node = RDController.Instance.node_selected, allowed = true };
 
             List<string> sciTypes = new List<string>();
+            ConfigNode TechNode = ConfigNode.Load(KSPUtil.ApplicationRootPath + "GameData/ModuleManager.TechTree");
+            TechNode = TechNode.GetNode("TechTree");
+            foreach (ConfigNode RDNode in TechNode.GetNodes("RDNode"))
+            {
+                if (RDNode.GetValue("id") == RDController.Instance.node_selected.tech.techID)
+                {
+                    string[] sciTypesArray = RDNode.GetValues("scitype");
+                    foreach (string scitype in sciTypesArray)
+                    {
+                        sciTypes.Add(scitype);
+                    }
+                }
+            }
+
+            string sciTypesDialog = "";
+            foreach (string scitype in sciTypes)
+            {
+                sciTypesDialog = sciTypesDialog + ", " + scitype;
+            }
+            if (sciTypesDialog.StartsWith(", "))
+            {
+                sciTypesDialog = sciTypesDialog.TrimStart(',');
+            }
+            string sciTypesDialogButton = "Research: " + RDController.Instance.node_selected.tech.scienceCost + sciTypesDialog;
+            string sciTypesDialogDescription = RDController.Instance.requiresCaption.text + "Required Science: " + sciTypesDialog;
+
+
+            RDController.Instance.actionButtonText.text = sciTypesDialogButton;
+            RDController.Instance.requiresCaption.text = sciTypesDialog;
             OnResearchButtonPresented.Fire(request);
             return request.allowed;
         }
@@ -150,7 +201,7 @@ namespace SciencePlus
                     {
                         if (scitype == scienceType.type)
                         {
-                            if (scienceType.scienceBank < request.node.tech.scienceCost)
+                            if ((scienceType.scienceBank < request.node.tech.scienceCost) | ((scienceType.scienceBank + scienceType.scienceCache) < request.node.tech.scienceCost))
                             {
                                 typecheck = false;
                             }
