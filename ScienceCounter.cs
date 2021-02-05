@@ -10,7 +10,8 @@ namespace SciencePlus
         private void Awake()
         {
             ScienceCounter.instance = this;
-            BuildType();
+            BuildTypes();
+
         }
 
         private void Start()
@@ -76,23 +77,19 @@ namespace SciencePlus
 
         public List<ScienceType> allScienceTypes = new List<ScienceType>();
 
-        public void BuildType()
+        public void BuildTypes()
         {
             allScienceTypes.Clear();
             ConfigNode SciencePlusNode = ConfigNode.Load(KSPUtil.ApplicationRootPath + "GameData/Science+/Science+.cfg");
-            Debug.Log("[--------SCIENCE+--------]: " + SciencePlusNode);
             SciencePlusNode = SciencePlusNode.GetNode("Science+");
-            Debug.Log("[--------SCIENCE+--------]: " + SciencePlusNode);
             ConfigNode[] ScienceTypeNodes = SciencePlusNode.GetNodes();
             int counter = 0;
             foreach (ConfigNode typeNode in ScienceTypeNodes)
             {
-                Debug.Log("[--------SCIENCE+--------]: " + typeNode);
                 List<string> typeIDs = new List<string>();
                 string[] typeIDsArray = typeNode.GetValues("id");
                 foreach (string typeID in typeIDsArray)
                 {
-                    Debug.Log("[--------SCIENCE+--------]: " + typeID);
                     typeIDs.Add(typeID);
                 }
 
