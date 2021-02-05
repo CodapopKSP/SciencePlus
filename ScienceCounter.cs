@@ -3,13 +3,14 @@ using UnityEngine;
 
 namespace SciencePlus
 {
-    [KSPAddon(KSPAddon.Startup.FlightAndKSC, false)]
+    [KSPAddon(KSPAddon.Startup.FlightAndKSC, true)]
 
     public class ScienceCounter : MonoBehaviour
     {
         private void Awake()
         {
             ScienceCounter.instance = this;
+            BuildType();
         }
 
         private void Start()
@@ -73,20 +74,25 @@ namespace SciencePlus
             public float scienceCache;
         }
 
-        public List<ScienceType> allScienceTypes = new List<ScienceType>()
+        public List<ScienceType> allScienceTypes = new List<ScienceType>();
 
-        /*
-        public ScienceType BuildType()
+        public void BuildType()
         {
+            allScienceTypes.Clear();
             ConfigNode SciencePlusNode = ConfigNode.Load(KSPUtil.ApplicationRootPath + "GameData/Science+/Science+.cfg");
+            Debug.Log("[--------SCIENCE+--------]: " + SciencePlusNode);
+            SciencePlusNode = SciencePlusNode.GetNode("Science+");
+            Debug.Log("[--------SCIENCE+--------]: " + SciencePlusNode);
             ConfigNode[] ScienceTypeNodes = SciencePlusNode.GetNodes();
             int counter = 0;
             foreach (ConfigNode typeNode in ScienceTypeNodes)
             {
+                Debug.Log("[--------SCIENCE+--------]: " + typeNode);
                 List<string> typeIDs = new List<string>();
                 string[] typeIDsArray = typeNode.GetValues("id");
                 foreach (string typeID in typeIDsArray)
                 {
+                    Debug.Log("[--------SCIENCE+--------]: " + typeID);
                     typeIDs.Add(typeID);
                 }
 
@@ -94,8 +100,8 @@ namespace SciencePlus
                 counter += 1;
             }
         }
-        */
 
+        /*
         {
             new ScienceType("Red",    new List<string>() { "Moho",    "Duna"            }, 0),
             new ScienceType("Orange", new List<string>() { "Dres",    "Vall"            }, 1),
@@ -105,7 +111,8 @@ namespace SciencePlus
             new ScienceType("Purple", new List<string>() { "Eve",     "Bop"             }, 5),
             new ScienceType("Gold",   new List<string>() { "Kerbol",  "Jool",   "Tylo"  }, 6),
             new ScienceType("Silver", new List<string>() { "Gilly",   "Laythe"          }, 7)
-        };
+        };*/
+
 
         private static readonly System.Random random = new System.Random();
         public static ScienceCounter instance;
