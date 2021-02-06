@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using KSP.UI.Screens;
-
+using System.IO;
+using RUI.Icons.Selectable;
 
 namespace SciencePlus
 {
@@ -11,6 +12,27 @@ namespace SciencePlus
 		private static ApplicationLauncherButton button = null;
 
 		public static Callback Toggle = delegate { };
+
+		public void Start()
+		{
+			GameObject.DontDestroyOnLoad(this);
+			GameEvents.onGUIApplicationLauncherReady.Add(OnGUIAppLauncherReady);
+		}
+
+		void OnDestroy()
+		{
+			GameEvents.onGUIApplicationLauncherReady.Remove(OnGUIAppLauncherReady);
+		}
+
+		void OnGUIAppLauncherReady()
+		{
+			if (ApplicationLauncher.Ready && button == null)
+			{
+				Texture tex = GameDatabase.Instance.GetTexture("SciencePlus/Assets/icon", false);
+				button = ApplicationLauncher.Instance.AddModApplication(OnToggle, OnToggle, null, null, null, null, buttonScenes, tex);
+				UpdateVisibility();
+			}
+		}
 
 		static bool buttonVisible
 		{
@@ -28,30 +50,9 @@ namespace SciencePlus
 			}
 		}
 
-		private void onToggle()
+		private void OnToggle()
 		{
 			Toggle();
-		}
-
-		public void Start()
-		{
-			GameObject.DontDestroyOnLoad(this);
-			GameEvents.onGUIApplicationLauncherReady.Add(OnGUIAppLauncherReady);
-		}
-
-		void OnDestroy()
-		{
-			GameEvents.onGUIApplicationLauncherReady.Remove(OnGUIAppLauncherReady);
-		}
-
-		void OnGUIAppLauncherReady()
-		{
-			if (ApplicationLauncher.Ready && button == null)
-			{
-				var tex = GameDatabase.Instance.GetTexture("GameData/Science+/icon", false);
-				button = ApplicationLauncher.Instance.AddModApplication(onToggle, onToggle, null, null, null, null, buttonScenes, tex);
-				UpdateVisibility();
-			}
 		}
 	}
 

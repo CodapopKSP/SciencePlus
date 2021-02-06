@@ -23,6 +23,7 @@
 
         public override void OnLoad(ConfigNode node)
         {
+            //ScienceCounter.instance.BuildTypes();
             node = node.GetNode("Science");
             foreach (ScienceCounter.ScienceType scienceType in ScienceCounter.instance.allScienceTypes)
             {

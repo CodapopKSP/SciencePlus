@@ -3,15 +3,17 @@ using UnityEngine;
 
 namespace SciencePlus
 {
-    [KSPAddon(KSPAddon.Startup.FlightAndKSC, true)]
+    [KSPAddon(KSPAddon.Startup.FlightAndKSC, false)]
 
     public class ScienceCounter : MonoBehaviour
     {
         private void Awake()
         {
             ScienceCounter.instance = this;
-            BuildTypes();
-
+            if (allScienceTypes.Count<1)
+            {
+                BuildTypes();
+            }
         }
 
         private void Start()
@@ -75,15 +77,14 @@ namespace SciencePlus
             public float scienceCache;
         }
 
-        public List<ScienceType> allScienceTypes = new List<ScienceType>();
-
         public void BuildTypes()
         {
             allScienceTypes.Clear();
-            ConfigNode SciencePlusNode = ConfigNode.Load(KSPUtil.ApplicationRootPath + "GameData/Science+/Science+.cfg");
+            ConfigNode SciencePlusNode = ConfigNode.Load(KSPUtil.ApplicationRootPath + "GameData/SciencePlus/Science+.cfg");
             SciencePlusNode = SciencePlusNode.GetNode("Science+");
             ConfigNode[] ScienceTypeNodes = SciencePlusNode.GetNodes();
             int counter = 0;
+
             foreach (ConfigNode typeNode in ScienceTypeNodes)
             {
                 List<string> typeIDs = new List<string>();
@@ -98,19 +99,7 @@ namespace SciencePlus
             }
         }
 
-        /*
-        {
-            new ScienceType("Red",    new List<string>() { "Moho",    "Duna"            }, 0),
-            new ScienceType("Orange", new List<string>() { "Dres",    "Vall"            }, 1),
-            new ScienceType("Yellow", new List<string>() { "Mun",     "Pol"             }, 2),
-            new ScienceType("Green",  new List<string>() { "Minmus",  "Ike"             }, 3),
-            new ScienceType("Blue",   new List<string>() { "Kerbin",  "Eeloo"           }, 4),
-            new ScienceType("Purple", new List<string>() { "Eve",     "Bop"             }, 5),
-            new ScienceType("Gold",   new List<string>() { "Kerbol",  "Jool",   "Tylo"  }, 6),
-            new ScienceType("Silver", new List<string>() { "Gilly",   "Laythe"          }, 7)
-        };*/
-
-
+        public List<ScienceType> allScienceTypes = new List<ScienceType>();
         private static readonly System.Random random = new System.Random();
         public static ScienceCounter instance;
     }

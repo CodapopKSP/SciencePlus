@@ -94,7 +94,7 @@ namespace SciencePlus
 
 			foreach (ScienceCounter.ScienceType scienceType in ScienceCounter.instance.allScienceTypes)
             {
-				GUILayout.Label(scienceType.scienceName + ": " + scienceType.scienceBank);
+				GUILayout.Label(scienceType.scienceName + ": " + (scienceType.scienceBank + scienceType.scienceCache));
 			}
 			GUILayout.EndVertical();
 			GUI.DragWindow(new Rect(0, 0, 1000, 200));
